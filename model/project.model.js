@@ -19,9 +19,9 @@ const projectModel = new Schema({
         type: String,
         trim: true
     },
-    image: [String]
+    image: [String],
 
 },{timestamps: true})
 
 const Project = mongoose.model("project", projectModel) 
-module.export = Project
+module.exports = Project

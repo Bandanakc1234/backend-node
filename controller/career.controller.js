@@ -17,50 +17,43 @@ exports.addCareer = async (req, res) => {
 }
 
 
-
-//to edit new career
-exports.updateCareer = async (req, res, next) => {
-    const career = await Career.findByIdAndUpdate({career_title: req.body.career_title})
-    if(!career){
-        const career = new Career({
-            career_title: req.body.career_title
-        })
-        await career.save()
-        if(!career) {
-            return next({
-                msg: "something went wrong",
-                status: 400
-            })
-        }
-        res.json({
-            msg: "career updated successfully",
-            status: 400
-        })
+//to view career
+exports.getCareer = async (req, res) => {
+    let career = await Career.find()
+    if (!career) {
+        return res.status(400).json({ error: "Something went wrong" })
     }
-    else{
-        return next({
-            msg: "career already saved",
-            status: 400
-        })
+    res.json( career )
+}
+
+
+//to update career
+exports.updateCareer = async (req, res) => {
+    const career = await Career.findByIdAndUpdate(req.params.id, {
+        career_title: req.body.career_title,
+        vacancyNumber: req.body.vacancyNumber,
+        offered_salary: req.body.offered_salary,
+        posted_date: req.body.posted_date,
+        deadline: req.body.deadline
+    }, { new: true })
+    if (!career) {
+        return res.status(400).json({ error: "Something went wrong" })
+    }
+    else {
+        return res.status(400).json({ error: "career updated successfully" })
     }
 }
 
 
+
 //delete career
-exports.deleteCareer = (req, res, next) =>{
-    Career.findByIdAndDelete (req.params.id)
-    .then(career =>{
-        if(!career){
-            return next({
-                msg: "career not found",
-                status: 400
-            })
-        }
-        res.json({
-            msg: "career deleted successfully",
-            deleted_career : career
-        })
-    })
-    .catch(err => next(err))
+exports.deleteCareer = async (req, res) => {
+    const career = await Career.findByIdAndDelete(req.params.id)
+    if (!career) {
+        return res.status(400).json({ error: "career not found" })
+    }
+    else {
+        return res.status(400).json({ error: "career deleted successfully" })
+    }
 }
 
