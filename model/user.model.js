@@ -5,7 +5,7 @@ const Schema = mongoose.Schema;
 const jwt = require("jsonwebtoken")
 
 
-const UserModel = new Schema({
+exports.User = new Schema({
     username: {
         type: String,
         // required: true,
@@ -103,5 +103,3 @@ exports.authentication = async (req, res) => {
 //     return this.password === this.encryptPassword(password)
 // }
 // }
-
-module.exports = mongoose.model("User", UserModel)
