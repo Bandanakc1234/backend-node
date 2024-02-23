@@ -1,5 +1,7 @@
 const mongoose = require("mongoose")
 const Schema = mongoose.Schema
+const { ObjectId } = mongoose.Schema
+
 
 const projectModel = new Schema({
     project_title: {
@@ -8,20 +10,23 @@ const projectModel = new Schema({
         trim: true
     },
     category: {
-        type: String,
+        type: ObjectId,
+        ref: "Category",
+        required: true,
         trim: true
     },
     language: {
         type: String,
-        trim: TextTrackCueList
+        trim: true
     },
     tools: {
         type: String,
         trim: true
     },
-    image: [String],
+    project_image: String,
 
-},{timestamps: true})
+}, { timestamps: true })
 
-const Project = mongoose.model("project", projectModel) 
-module.exports = Project
+// const Project = mongoose.model("Project", projectModel)
+// module.exports = Project
+module.exports = mongoose.model("Project", projectModel)
