@@ -13,7 +13,7 @@ const projectModel = new Schema({
     },
     language: {
         type: String,
-        trim: TextTrackCueList
+        trim: true
     },
     tools: {
         type: String,

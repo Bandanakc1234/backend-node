@@ -9,6 +9,7 @@ const bodyParser = require('body-parser')
 const TestRoutes = require('./routes/testroutes')
 const CareerRoutes = require('./routes/career.route')
 const ProjectRoutes = require('./routes/project.route')
+const UserRoutes = require('./routes/user.route')
 
 const app = express()
 const port = process.env.PORT || 5000
@@ -20,8 +21,10 @@ app.use(bodyParser.json())
 app.use('/api', TestRoutes)
 app.use('/api/career', CareerRoutes)
 app.use('/api/project', ProjectRoutes)
+app.use('/api/user', UserRoutes )
 
 
 app.listen(port, () =>{
     console.log(`server started successfully at port ${port}`)
 })
+
