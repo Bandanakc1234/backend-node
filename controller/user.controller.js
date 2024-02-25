@@ -5,7 +5,7 @@ const Token = require("./../model/token.model")
 const crypto = require("crypto");
 const sendEmail = require("../utils/set.email");
 const jwt = require("jsonwebtoken")
-const {expressjwt} = require("express-jwt")
+// const {expressjwt} = require("express-jwt")  
 
 const createToken = (user) => {
     var token = jwt.sign({
@@ -266,8 +266,22 @@ exports.Logout = async(req,res)=>{
     res.send({msg: "Signed out successfully"})
 }
 
+//delete user
+exports.DeleteUser = (req, res) => {
+    User.findByIdAndDelete(req.params.id)
+        .then((user) => {
+            if (!user) {
+                return res.status(400).json({error: "user not found!!"})
+            }
+            return res.status(200).json({message:"User deleted successfully"})
+        })
+        .catch(error =>{
+            return res.status(400).json({error: error.message})
+        })
+}
+
 //for authorizaion 
-exports.requireLogin = expressjwt({
-    algorithms:['HS256'],
-    secret: process.env.JWT_SECRET_KEY
-})
+// exports.requireLogin = expressjwt({
+//     algorithms:['HS256'],
+//     secret: process.env.JWT_SECRET_KEY
+// })
