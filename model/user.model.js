@@ -2,7 +2,7 @@ const mongoose = require("mongoose")
 // const uuidv1 = require("uuidv1")
 const Schema = mongoose.Schema;
 // const crypto = require("crypto")
-const jwt = require("jsonwebtoken")
+// const jwt = require("jsonwebtoken")
 
 
 const UserModel = new Schema({

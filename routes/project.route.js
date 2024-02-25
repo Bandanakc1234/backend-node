@@ -1,17 +1,18 @@
 const router = require("express").Router()
 const { getProject, addProject, updateProject, deleteProject, getProjectByCategory } = require("../controller/project.controller")
+const { requireLogin } = require("../controller/user.controller")
 const upload = require('./../utils/fileUpload')
 
 
 
-router.post("/add_project",upload.single("project_image"), addProject)
+router.post("/add_project",upload.single("project_image"),requireLogin, addProject)
 
 router.get("/view_project", getProject)
 
 router.get("/getproductbycategory/:id", getProjectByCategory)
 
-router.put("/update_project/:id",upload.single("project_image"), updateProject)
+router.put("/update_project/:id",upload.single("project_image"),requireLogin, updateProject)
 
-router.delete("/delete_project/:id", deleteProject)
+router.delete("/delete_project/:id",requireLogin, deleteProject)
 
 module.exports = router
