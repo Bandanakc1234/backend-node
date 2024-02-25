@@ -5,7 +5,7 @@ const Token = require("./../model/token.model")
 const crypto = require("crypto");
 const sendEmail = require("../utils/set.email");
 const jwt = require("jsonwebtoken")
-// const {expressjwt} = require("express-jwt")  
+const {expressjwt} = require("express-jwt")  
 
 const createToken = (user) => {
     var token = jwt.sign({
@@ -137,7 +137,7 @@ exports.resendVerification = async (req, res) => {
         from: "noreplay@something.com",
         to: user.email,
         subject: "Verification email",
-        text: `Click on the following link or copy paste it in browser to verify your email. paste it in browser to verify your email.${url}`,
+        text: `Click on the following link or copy paste it in browser to verify your email.${url}`,
         html: `<a href="${url}"><button>Verify Email</button></a>`
     })
     res.send({
@@ -217,12 +217,9 @@ exports.getUserDetails = async (req, res) => {
 
 // update user
 exports.updateUser = async (req, res) => {
-    let user = await User.findByIdAndUpdate(req.params.id, {
-        username: req.body.username,
-        email: req.body.email,
-        isVerified: req.body.isVerified,
-        role: req.body.role
-    }, { new: true })
+    let user = await User.findByIdAndUpdate(req.params.id)
+    UserInformation(user, req.body)
+    user = await user.save()
     if (!user) {
         return res.status(400).json({ error: "Something went wrong." })
     }
@@ -281,7 +278,7 @@ exports.DeleteUser = (req, res) => {
 }
 
 //for authorizaion 
-// exports.requireLogin = expressjwt({
-//     algorithms:['HS256'],
-//     secret: process.env.JWT_SECRET_KEY
-// })
+exports.requireLogin = expressjwt({
+    algorithms:['HS256'],
+    secret: process.env.JWT_SECRET_KEY
+})

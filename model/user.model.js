@@ -5,7 +5,7 @@ const Schema = mongoose.Schema;
 const jwt = require("jsonwebtoken")
 
 
-exports.User = new Schema({
+const UserModel = new Schema({
     username: {
         type: String,
         // required: true,
@@ -43,36 +43,9 @@ exports.User = new Schema({
     }
 }, { timestamps: true })
 
+module.exports = mongoose.model("User", UserModel)
 
-//authentication
-exports.authentication = async (req, res) => {
-        let token;
-    
-        if (req.headers['authorization']) {
-            token = req.headers["authorization"];
-        } else if (req.query.authorization) {
-            token = req.query.authorization;
-        }
-    
-        if (!token) {
-            return res.status(400).json({ error: "Token not provided. Token verification failed. You don't have access."});
-        }
-    
-        try {
-            const user = jwt.verify(token, JWT_SECRET_KEY);
-    
-            // Find user by ID
-            const foundUser = await user.findById(user._id);
-    
-            if (!foundUser) {
-                return res.status(400).json({error: "User not found or user removed from the system"});
-            }
-            req.user = foundUser;
-            next();
-        } catch {
-            return res.status(400).json({error: "Internal Server Error"});
-        }
-    };
+
 
 // //vertual field
 // UserModel.virtual('password')
@@ -103,3 +76,4 @@ exports.authentication = async (req, res) => {
 //     return this.password === this.encryptPassword(password)
 // }
 // }
+
