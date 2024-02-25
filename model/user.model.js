@@ -4,7 +4,6 @@ const Schema = mongoose.Schema;
 // const crypto = require("crypto")
 const jwt = require("jsonwebtoken")
 
-
 const UserModel = new Schema({
     username: {
         type: String,
@@ -43,6 +42,9 @@ const UserModel = new Schema({
     }
 }, { timestamps: true })
 
+module.exports = mongoose.model("User", UserModel)
+
+
 
 //authentication
 exports.authentication = async (req, res) => {
@@ -69,7 +71,8 @@ exports.authentication = async (req, res) => {
             }
             req.user = foundUser;
             next();
-        } catch {
+        } 
+        catch {
             return res.status(400).json({error: "Internal Server Error"});
         }
     };
@@ -104,4 +107,3 @@ exports.authentication = async (req, res) => {
 // }
 // }
 
-module.exports = mongoose.model("User", UserModel)

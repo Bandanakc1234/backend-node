@@ -1,6 +1,7 @@
 const express = require("express")
 require("dotenv").config()
 require("./database/connection")
+const morgan = require("morgan")
 
 //middleware
 const bodyParser = require('body-parser')
@@ -9,6 +10,7 @@ const bodyParser = require('body-parser')
 const TestRoutes = require('./routes/testroutes')
 const CareerRoutes = require('./routes/career.route')
 const ProjectRoutes = require('./routes/project.route')
+
 
 const CategoryRoutes = require('./routes/category.route')
 
@@ -20,6 +22,7 @@ const port = process.env.PORT || 5000
 
 //middleware
 app.use(bodyParser.json())
+app.use(morgan("dev"))
 
 //use routes
 app.use('/api', TestRoutes)
