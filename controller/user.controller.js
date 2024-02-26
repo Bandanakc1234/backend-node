@@ -17,6 +17,12 @@ const createToken = (user) => {
 }
 
 UserInformation = (user, reqData) => {
+    if (reqData.first_name) {
+        user.username = reqData.first_name
+    }
+    if (reqData.last_name) {
+        user.username = reqData.last_name
+    }
     if (reqData.username) {
         user.username = reqData.username
     }
@@ -28,6 +34,12 @@ UserInformation = (user, reqData) => {
     }
     if (reqData.gender) {
         user.gender = reqData.gender
+    }
+    if (reqData.age) {
+        user.age = reqData.age
+    }
+    if (reqData.phone_number) {
+        user.phonenumber = reqData.phone_number
     }
     user.address = {}
     if (reqData.temporary_address) {
