@@ -4,7 +4,7 @@ const { categoryCheck, validate } = require("../validation")
 const router = require("express").Router()
 
 
-router.post("/add_category", requireLogin, categoryCheck, validate, addCategory)
+router.post("/add_category", requireLogin, categoryCheck,validate, addCategory)
 
 router.get("/view_category", getCategory)
 

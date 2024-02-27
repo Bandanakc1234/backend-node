@@ -5,7 +5,7 @@ const Token = require("./../model/token.model")
 const crypto = require("crypto");
 const sendEmail = require("../utils/set.email");
 const jwt = require("jsonwebtoken")
-// const {expressjwt} = require("express-jwt")  
+const {expressjwt} = require("express-jwt")  
 
 const createToken = (user) => {
     var token = jwt.sign({
@@ -280,8 +280,8 @@ exports.DeleteUser = (req, res) => {
         })
 }
 
-//for authorizaion 
-// exports.requireLogin = expressjwt({
-//     algorithms:['HS256'],
-//     secret: process.env.JWT_SECRET_KEY
-// })
+// for authorizaion 
+exports.requireLogin = expressjwt({
+    algorithms:['HS256'],
+    secret: process.env.JWT_SECRET_KEY
+})

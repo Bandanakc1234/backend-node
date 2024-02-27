@@ -6,10 +6,6 @@ const jwt = require("jsonwebtoken")
 
 
 const UserModel = new Schema({
-
-
-
-
     username: {
         type: String,
         // required: true,
@@ -52,35 +48,35 @@ module.exports = mongoose.model("User", UserModel)
 
 
 //authentication
-exports.authentication = async (req, res) => {
-        let token;
+// exports.authentication = async (req, res) => {
+//         let token;
     
-        if (req.headers['authorization']) {
-            token = req.headers["authorization"];
-        } else if (req.query.authorization) {
-            token = req.query.authorization;
-        }
+//         if (req.headers['authorization']) {
+//             token = req.headers["authorization"];
+//         } else if (req.query.authorization) {
+//             token = req.query.authorization;
+//         }
     
-        if (!token) {
-            return res.status(400).json({ error: "Token not provided. Token verification failed. You don't have access."});
-        }
+//         if (!token) {
+//             return res.status(400).json({ error: "Token not provided. Token verification failed. You don't have access."});
+//         }
     
-        try {
-            const user = jwt.verify(token, JWT_SECRET_KEY);
+//         try {
+//             const user = jwt.verify(token, JWT_SECRET_KEY);
     
-            // Find user by ID
-            const foundUser = await user.findById(user._id);
+//             // Find user by ID
+//             const foundUser = await user.findById(user._id);
     
-            if (!foundUser) {
-                return res.status(400).json({error: "User not found or user removed from the system"});
-            }
-            req.user = foundUser;
-            next();
-        } 
-        catch {
-            return res.status(400).json({error: "Internal Server Error"});
-        }
-    };
+//             if (!foundUser) {
+//                 return res.status(400).json({error: "User not found or user removed from the system"});
+//             }
+//             req.user = foundUser;
+//             next();
+//         } 
+//         catch {
+//             return res.status(400).json({error: "Internal Server Error"});
+//         }
+//     };
 
 // //vertual field
 // UserModel.virtual('password')

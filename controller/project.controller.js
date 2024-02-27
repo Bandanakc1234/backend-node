@@ -7,10 +7,15 @@ exports.addProject = async (req, res) => {
     if (project) {
         return res.status(400).json({ error: "project already exists" })
     }
+    if(!req.file){
+        return res.status(400).json({error:"file not selected"})
+    }
     let projectToAdd = new Project( {
         project_title: req.body.project_title,
         project_image: req.file.path,
-        category: req.body.category
+        category: req.body.category,
+        language:req.body.language,
+        tools: req.body.tools
     })
     projectToAdd = await projectToAdd.save()
     if (!projectToAdd) {
