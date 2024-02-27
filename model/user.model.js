@@ -2,35 +2,52 @@ const mongoose = require("mongoose")
 // const uuidv1 = require("uuidv1")
 const Schema = mongoose.Schema;
 // const crypto = require("crypto")
-const jwt = require("jsonwebtoken")
+// const jwt = require("jsonwebtoken")
 
 
 const UserModel = new Schema({
+    firstname:{
+        type: String,
+        require: true,
+        trim: true
+    },
+    lastname:{
+        type: String,
+        require: true,
+        trim: true
+    },
     username: {
         type: String,
-        // required: true,
+        required: true,
         trim: true
     },
     email: {
         type: String,
-        // required: true,
-        // unique: true
+        required: true
     },
     password: {
         type: String,
-        // required: true,
+        required: true
     },
     // salt: String,
     gender: {
         type: String,
-        // required: true,
+        required: true,
         enum: ['male', 'female', 'others']
+    },
+    age:{
+        type: Number,
+        require: true
+    },
+    phonenumber:{
+        type: Number,
+        require: true
     },
     address: {
         tempAddress: [String],
         permanentAddress: {
             type: String,
-            // required: true
+            required: true
         }
     },
     role: {
@@ -47,36 +64,6 @@ module.exports = mongoose.model("User", UserModel)
 
 
 
-//authentication
-// exports.authentication = async (req, res) => {
-//         let token;
-    
-//         if (req.headers['authorization']) {
-//             token = req.headers["authorization"];
-//         } else if (req.query.authorization) {
-//             token = req.query.authorization;
-//         }
-    
-//         if (!token) {
-//             return res.status(400).json({ error: "Token not provided. Token verification failed. You don't have access."});
-//         }
-    
-//         try {
-//             const user = jwt.verify(token, JWT_SECRET_KEY);
-    
-//             // Find user by ID
-//             const foundUser = await user.findById(user._id);
-    
-//             if (!foundUser) {
-//                 return res.status(400).json({error: "User not found or user removed from the system"});
-//             }
-//             req.user = foundUser;
-//             next();
-//         } 
-//         catch {
-//             return res.status(400).json({error: "Internal Server Error"});
-//         }
-//     };
 
 // //vertual field
 // UserModel.virtual('password')
