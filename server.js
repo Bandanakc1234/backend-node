@@ -7,7 +7,6 @@ const morgan = require("morgan")
 const bodyParser = require('body-parser')
 
 //routes
-const TestRoutes = require('./routes/testroutes')
 const CareerRoutes = require('./routes/career.route')
 const ProjectRoutes = require('./routes/project.route')
 
@@ -25,7 +24,6 @@ app.use(bodyParser.json())
 app.use(morgan("dev"))
 
 //use routes
-app.use('/api', TestRoutes)
 app.use('/api/career', CareerRoutes)
 app.use('/api/project', ProjectRoutes)
 
