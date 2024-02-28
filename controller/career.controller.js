@@ -7,7 +7,11 @@ exports.addCareer = async (req, res) => {
         return res.status(400).json({ error: "career already exist" })
     }
     let careerToAdd = new Career({
-        career_title: req.body.career_title
+        career_title: req.body.career_title,
+        vacancyNumber: req.body.vacancyNumber,
+        offered_salary: req.body.offered_salary,
+        posted_date: req.body.posted_date,
+        deadline: req.body.deadline
     })
     careerToAdd = await careerToAdd.save()
     if (!careerToAdd) {
@@ -23,7 +27,7 @@ exports.getCareer = async (req, res) => {
     if (!career) {
         return res.status(400).json({ error: "Something went wrong" })
     }
-    res.json( career )
+    res.json(career)
 }
 
 

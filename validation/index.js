@@ -2,7 +2,7 @@ const { check, validationResult } = require('express-validator')
 
 exports.categoryCheck = [
     check('category_title', 'category title is required').notEmpty()
-        .isLength({ min: 3 }).withMessage("Category name must be at least 3 characters")
+    .isLength({ min: 3 }).withMessage("Category name must be at least 3 characters")
 ]
 
 exports.validate = (req, res, next) => {
@@ -12,6 +12,31 @@ exports.validate = (req, res, next) => {
     }
     next()
 }
+
+exports.careerCheck = [
+    check('career_title', 'career title is required').notEmpty()
+        .isLength({ min: 3 }).withMessage("career name must be at least 3 character"),
+
+    check('vacancyNumber').optional({
+        nullable: true
+    })
+        .isNumeric().withMessage("vacancy number must be number"),
+
+    check('offered_salary').optional({
+        nullable: true
+    })
+        .isNumeric().withMessage("salary must be number"),
+
+    check('posted_date').optional({
+        nullable: true
+    })
+        .isDate().withMessage("posted date must be in date"),
+
+    check('deadline').optional({
+        nullable: true
+    })
+        .isDate().withMessage("deadline must be in date")
+]
 
 exports.projectCheck = [
     check('project_title', 'project title is required').notEmpty()
@@ -66,6 +91,6 @@ exports.userCheck = [
     check('phone_number', 'Phone number is required').notEmpty()
         .matches(/^9\d{9}$/).withMessage("Phone number must start with 9 and contain 10 digits."),
 
-    // check('address','Address is required').notEmpty()
-
+    check('permanent_address','Permanent is required').notEmpty()
+   
 ]
