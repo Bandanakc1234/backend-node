@@ -33,7 +33,7 @@ UserInformation = (user, reqData) => {
         user.password = reqData.password
     }
     if (reqData.confirm_password) {
-        user.password = reqData.confirm_password
+        user.confirmpassword = reqData.confirm_password
     }
     if (reqData.gender) {
         user.gender = reqData.gender
@@ -105,7 +105,6 @@ exports.verifyEmail = async (req, res) => {
     if (!token) {
         return res.status(400).json({ error: "Invalid token or token may have expired." })
     }
-    console.log("problem found")
     //find user
     let user = await User.findById(token.user)
     if (!user) {
@@ -195,7 +194,7 @@ exports.resetPassword = async (req, res) => {
     //check token
     const token = await Token.findOne({ token: req.params.token })
     if (!token) {
-        return res.status(400).json({ error: "Tnvalid token or token may have expired" })
+        return res.status(400).json({ error: "Invalid token or token may have expired" })
     }
     //find user
     let user = await User.findById(token.user)
