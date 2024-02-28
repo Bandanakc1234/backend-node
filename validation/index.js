@@ -91,6 +91,6 @@ exports.userCheck = [
     check('phone_number', 'Phone number is required').notEmpty()
         .matches(/^9\d{9}$/).withMessage("Phone number must start with 9 and contain 10 digits."),
 
-    check('permanent_address','Permanent is required').notEmpty()
+    check('permanent_address','Permanent address is required').notEmpty()
    
 ]
