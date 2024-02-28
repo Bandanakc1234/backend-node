@@ -8,7 +8,7 @@ router.post("/add_category", requireLogin, categoryCheck,validate, addCategory)
 
 router.get("/view_category", getCategory)
 
-router.put("/update_category/:id", requireLogin, updateCategory)
+router.put("/update_category/:id", requireLogin, categoryCheck, validate, updateCategory)
 
 router.delete("/delete_category/:id", requireLogin, deleteCategory)
 

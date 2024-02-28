@@ -12,7 +12,7 @@ router.get("/view_project", getProject)
 
 router.get("/getproductbycategory/:id", getProjectByCategory)
 
-router.put("/update_project/:id",upload.single("project_image"),requireLogin, updateProject)
+router.put("/update_project/:id",upload.single("project_image"),requireLogin,projectCheck,validate, updateProject)
 
 router.delete("/delete_project/:id",requireLogin, deleteProject)
 

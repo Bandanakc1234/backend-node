@@ -13,20 +13,20 @@ const CareerModel = new Schema({
         trim: true
     },
     offered_salary: {
-        types: Number,
+        type: Number,
         // required: true,
         // trim: true
     },
     posted_date: {
-        types: Date,
+        type: Date,
         // required: true,
         // trim: true
     },
     deadline: {
-        types: Date,
+        type: Date,
         // required: true,
         // trim: true
-    },
+    }
 
 },{timestamps: true})
 
