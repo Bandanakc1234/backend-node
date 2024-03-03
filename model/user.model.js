@@ -8,46 +8,50 @@ const Schema = mongoose.Schema;
 const UserModel = new Schema({
     firstname:{
         type: String,
-        require: true,
+        // required: true,
         trim: true
     },
     lastname:{
         type: String,
-        require: true,
+        // required: true,
         trim: true
     },
     username: {
         type: String,
-        required: true,
+        // required: true,
         trim: true
     },
     email: {
         type: String,
-        required: true
+        // required: true
     },
     password: {
         type: String,
-        required: true
+        // required: true
+    },
+    confirmpassword: {
+        type: String,
+        // required: true
     },
     // salt: String,
     gender: {
         type: String,
-        required: true,
+        // required: true,
         enum: ['male', 'female', 'others']
     },
     age:{
         type: Number,
-        require: true
+        // require: true
     },
     phonenumber:{
         type: Number,
-        require: true
+        // require: true
     },
     address: {
         tempAddress: [String],
         permanentAddress: {
             type: String,
-            required: true
+            // required: true
         }
     },
     role: {

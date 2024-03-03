@@ -18,10 +18,10 @@ const createToken = (user) => {
 
 UserInformation = (user, reqData) => {
     if (reqData.first_name) {
-        user.username = reqData.first_name
+        user.firstname = reqData.first_name
     }
     if (reqData.last_name) {
-        user.username = reqData.last_name
+        user.lastname = reqData.last_name
     }
     if (reqData.username) {
         user.username = reqData.username
@@ -30,7 +30,10 @@ UserInformation = (user, reqData) => {
         user.email = reqData.email
     }
     if (reqData.password) {
-        user.password = reqData.password //todo: hash password
+        user.password = reqData.password
+    }
+    if (reqData.confirm_password) {
+        user.confirmpassword = reqData.confirm_password
     }
     if (reqData.gender) {
         user.gender = reqData.gender
@@ -102,7 +105,6 @@ exports.verifyEmail = async (req, res) => {
     if (!token) {
         return res.status(400).json({ error: "Invalid token or token may have expired." })
     }
-    console.log("problem found")
     //find user
     let user = await User.findById(token.user)
     if (!user) {
@@ -192,7 +194,7 @@ exports.resetPassword = async (req, res) => {
     //check token
     const token = await Token.findOne({ token: req.params.token })
     if (!token) {
-        return res.status(400).json({ error: "Tnvalid token or token may have expired" })
+        return res.status(400).json({ error: "Invalid token or token may have expired" })
     }
     //find user
     let user = await User.findById(token.user)
@@ -200,6 +202,7 @@ exports.resetPassword = async (req, res) => {
         return res.status(400).json({ error: "Something went wrong." })
     }
     user.password = req.body.password
+    user.confirmpassword = req.body.confirm_password
     user = await user.save()
     if (!user) {
         return res.status(400).json({ error: "Something went wrong." })
