@@ -1,3 +1,4 @@
+const { findOne } = require("../model/project.model")
 const Category = require("./../model/category.model")
 
 exports.addCategory = async (req, res) =>{
@@ -20,6 +21,25 @@ exports.getCategory = async (req, res) => {
     let category = await Category.find()
     if (!category) {
         return res.status(400).json({ error: "Something went wrong" })
+    }
+    res.json(category)
+}
+
+//to view category details by id
+exports.getCategoryDetailsbyid = async (req, res) =>{
+    let category = await Category.findById(req.params.id)
+    if (!category){
+        return res.status(400).json({error:"something went wrong"})
+    }
+    res.json(category)
+}
+
+
+//to view category details by title
+exports.getCategoryDetailsbytitle = async(req, res) =>{
+    let category = await Category.findOne({category_title: req.body.category_title})
+    if(!category){
+        return res.status(400).json({error:"something went wrong"})
     }
     res.json(category)
 }

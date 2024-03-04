@@ -30,6 +30,24 @@ exports.getCareer = async (req, res) => {
     res.json(career)
 }
 
+//to view career details by id
+exports.getCareerDetailsbyid = async(req, res) =>{
+    let career = await Career.findById(req.params.id)
+    if(!career){
+        return res.status(400).json({error: "something went wrong"})
+    }
+    res.json(career)
+}
+
+//to view career details by title 
+exports.getCareerDetailsbytitle = async(req, res) =>{
+    let career = await Career.findOne({career_title: req.body.career_title})
+    if(!career){
+        return res.status(400).json({error: "something went wrong"})
+    }
+    res.json(career)
+}
+
 
 //to update career
 exports.updateCareer = async (req, res) => {
