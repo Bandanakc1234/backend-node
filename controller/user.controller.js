@@ -5,7 +5,7 @@ const Token = require("./../model/token.model")
 const crypto = require("crypto");
 const sendEmail = require("../utils/set.email");
 const jwt = require("jsonwebtoken")
-const {expressjwt} = require("express-jwt")  
+const { expressjwt } = require("express-jwt")
 
 const createToken = (user) => {
     var token = jwt.sign({
@@ -61,6 +61,7 @@ UserInformation = (user, reqData) => {
 
 //user register
 exports.Register = async (req, res) => {
+    console.log(req.body)
     //checked if email already registered
     const email = req.body.email;
     const user = await User.findOne({ email: email })
@@ -87,7 +88,8 @@ exports.Register = async (req, res) => {
         return res.status(400).json({ error: "fail to generate token." })
     }
     // send token in email
-    const url = `http://localhost:8000/api/user/verifyEmail/${token.token}`
+    // const url = `http://localhost:8000/api/user/verifyEmail/${token.token}`
+    const url = `${process.env.FRONTEND_URL}/user/verifyEmail/${token.token}`
     sendEmail({
         from: "noreplay@something.com",
         to: newUser.email,
@@ -262,7 +264,7 @@ exports.Login = async (req, res) => {
     }
 
     // Create login token
-    let token = createToken({user: user._id,role: user.role})
+    let token = createToken({ user: user._id, role: user.role })
 
     // Set cookie
     res.cookie('myCookie', token, { expire: Date.now() + 86400 });
@@ -273,9 +275,9 @@ exports.Login = async (req, res) => {
 }
 
 //logout
-exports.Logout = async(req,res)=>{
+exports.Logout = async (req, res) => {
     await res.clearCookie("myCookie")
-    res.send({msg: "Signed out successfully"})
+    res.send({ msg: "Signed out successfully" })
 }
 
 //delete user
@@ -283,20 +285,20 @@ exports.DeleteUser = (req, res) => {
     User.findByIdAndDelete(req.params.id)
         .then((user) => {
             if (!user) {
-                return res.status(400).json({error: "user not found!!"})
+                return res.status(400).json({ error: "user not found!!" })
             }
-            return res.status(200).json({message:"User deleted successfully"})
+            return res.status(200).json({ message: "User deleted successfully" })
         })
-        .catch(error =>{
-            return res.status(400).json({error: error.message})
+        .catch(error => {
+            return res.status(400).json({ error: error.message })
         })
 }
 
 
- 
+
 
 //for authorizaion 
 exports.requireLogin = expressjwt({
-    algorithms:['HS256'],
+    algorithms: ['HS256'],
     secret: process.env.JWT_SECRET_KEY
 })
