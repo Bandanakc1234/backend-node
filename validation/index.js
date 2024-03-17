@@ -2,7 +2,7 @@ const { check, validationResult } = require('express-validator')
 
 exports.categoryCheck = [
     check('category_title', 'category title is required').notEmpty()
-    .isLength({ min: 3 }).withMessage("Category name must be at least 3 characters")
+        .isLength({ min: 3 }).withMessage("Category name must be at least 3 characters")
 ]
 
 exports.validate = (req, res, next) => {
@@ -26,6 +26,16 @@ exports.careerCheck = [
         nullable: true
     })
         .isNumeric().withMessage("salary must be number"),
+
+    check('job_description').optional({
+        nullable: true
+    })
+    .isLength({ min: 10 }).withMessage(" job description must be at least 3 character"),
+
+    check('qualification').optional({
+        nullable: true
+    })
+        .isLength({ min: 10 }).withMessage("qualification must be at least 10 character"),
 
     check('posted_date').optional({
         nullable: true
@@ -71,13 +81,13 @@ exports.userCheck = [
         .matches(/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/).withMessage("Password must contain at least one Special character.")
         .isLength({ min: 8 }).withMessage("Password must contain at least 8 characters"),
 
-        check("confirm_password").notEmpty()
+    check("confirm_password").notEmpty()
         .withMessage("Confirm password is required.")
         .custom((value, { req }) => {
-          if (value === req.body.password) {
-            return true;
-          }
-          return false;
+            if (value === req.body.password) {
+                return true;
+            }
+            return false;
         })
         .withMessage("Passwords do not match."),
 
@@ -91,6 +101,6 @@ exports.userCheck = [
     check('phone_number', 'Phone number is required').notEmpty()
         .matches(/^9\d{9}$/).withMessage("Phone number must start with 9 and contain 10 digits."),
 
-    check('permanent_address','Permanent address is required').notEmpty()
-   
+    check('permanent_address', 'Permanent address is required').notEmpty()
+
 ]

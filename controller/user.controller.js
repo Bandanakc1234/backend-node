@@ -29,12 +29,12 @@ UserInformation = (user, reqData) => {
     if (reqData.email) {
         user.email = reqData.email
     }
-    if (reqData.password) {
-        user.password = reqData.password
-    }
-    if (reqData.confirm_password) {
-        user.confirmpassword = reqData.confirm_password
-    }
+    // if (reqData.password) {
+    //     user.password = reqData.password
+    // }
+    // if (reqData.confirm_password) {
+    //     user.confirmpassword = reqData.confirm_password
+    // }
     if (reqData.gender) {
         user.gender = reqData.gender
     }
@@ -71,7 +71,8 @@ exports.Register = async (req, res) => {
     let newUser = new User({
     })
     //created unique password
-    newUser.password = await bcrypt.hash(req.body.password, saltRounds)
+    let salt = await bcrypt.genSalt(saltRounds)
+    newUser.password = await bcrypt.hash(req.body.password, salt)
     UserInformation(newUser, req.body)
     //added user to the database
     newUser = await newUser.save()
@@ -246,16 +247,22 @@ exports.updateUser = async (req, res) => {
 
 //user Login
 exports.Login = async (req, res) => {
+    console.log(req.body)
     let { email, password } = req.body;
     // Check email
     let user = await User.findOne({ email: email });
     if (!user) {
         return res.status(400).json({ error: "Email not registered." });
     }
-
+if(!password){
+    return res.status(400).json({error:"Please enter your password"})
+}
     // Check password
-    const passwordMatch = bcrypt.compare(password, user.password);
+    // console.log(password, user.password)
+    // const passwordMatch = bcrypt.compare(password, user.password);
+    const passwordMatch = await bcrypt.compare(password, user.password)
     if (!passwordMatch) {
+        // if(password != user.password){
         return res.status(400).json({ error: "Email and password do not match" });
     }
 

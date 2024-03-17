@@ -10,6 +10,8 @@ exports.addCareer = async (req, res) => {
         career_title: req.body.career_title,
         vacancyNumber: req.body.vacancyNumber,
         offered_salary: req.body.offered_salary,
+        job_description: req.body.job_description,
+        qualification: req.body.qualification,
         posted_date: req.body.posted_date,
         deadline: req.body.deadline
     })
@@ -55,6 +57,8 @@ exports.updateCareer = async (req, res) => {
         career_title: req.body.career_title,
         vacancyNumber: req.body.vacancyNumber,
         offered_salary: req.body.offered_salary,
+        job_description: req.body.job_description,
+        qualification: req.body.qualification,
         posted_date: req.body.posted_date,
         deadline: req.body.deadline
     }, { new: true })
