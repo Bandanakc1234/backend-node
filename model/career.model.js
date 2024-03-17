@@ -17,6 +17,16 @@ const CareerModel = new Schema({
         // required: true,
         // trim: true
     },
+    job_description: {
+        type: String,
+        // required: true,
+        trim: true
+    },
+    qualification: {
+        type: String,
+        // required: true,
+        trim: true
+    },
     posted_date: {
         type: Date,
         // required: true,
