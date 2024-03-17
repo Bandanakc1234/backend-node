@@ -89,7 +89,8 @@ exports.Register = async (req, res) => {
     }
     // send token in email
     // const url = `http://localhost:8000/api/user/verifyEmail/${token.token}`
-    const url = `${process.env.FRONTEND_URL}/user/verifyEmail/${token.token}`
+    // const url = `http://localhost:3000/verifyEmail/${token.token}`
+    const url = `${process.env.FRONTEND_URL}/verifyEmail/${token.token}`
     sendEmail({
         from: "noreplay@something.com",
         to: newUser.email,
