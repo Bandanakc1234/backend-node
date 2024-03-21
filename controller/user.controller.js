@@ -66,7 +66,7 @@ exports.Register = async (req, res) => {
     const email = req.body.email;
     const user = await User.findOne({ email: email })
     if (user) {
-        return res.status(400).json({ error: "Email already exists." })
+        return res.status(400).json({ error: "Email already exists."})
     }
     let newUser = new User({
     })

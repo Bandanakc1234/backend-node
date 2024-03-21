@@ -28,6 +28,9 @@ app.use('/api/project', ProjectRoutes)
 app.use('/api/category', CategoryRoutes)
 app.use('/api/user', UserRoutes )
 
+//use static routes
+app.use('/api/public/uploads', express.static('public/uploads/'))
+
 
 
 app.listen(port, () =>{

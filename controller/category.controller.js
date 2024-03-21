@@ -54,7 +54,7 @@ exports.updateCategory = async (req, res) => {
         return res.status(400).json({ error: "Something went wrong" })
     }
     else {
-        return res.status(400).json({ error: "category updated successfully" })
+        return res.status(200).json({ msg: "category updated successfully" })
     }
 }
 

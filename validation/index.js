@@ -17,35 +17,21 @@ exports.careerCheck = [
     check('career_title', 'career title is required').notEmpty()
         .isLength({ min: 3 }).withMessage("career name must be at least 3 character"),
 
-    check('vacancyNumber').optional({
-        nullable: true
-    })
+    check('vacancyNumber', 'vacancyNumber is required').notEmpty()
         .isNumeric().withMessage("vacancy number must be number"),
 
-    check('offered_salary').optional({
-        nullable: true
-    })
+    check('offered_salary', "offered salary is required").notEmpty()
         .isNumeric().withMessage("salary must be number"),
 
-    check('job_description').optional({
-        nullable: true
-    })
-    .isLength({ min: 10 }).withMessage(" job description must be at least 3 character"),
+    check('job_description', 'job description is required').notEmpty()
+        .isLength({ min: 10 }).withMessage(" job description must be at least 3 character"),
 
-    check('qualification').optional({
-        nullable: true
-    })
+    check('qualification', 'Qualification is required').notEmpty()
         .isLength({ min: 10 }).withMessage("qualification must be at least 10 character"),
 
-    check('posted_date').optional({
-        nullable: true
-    })
-        .isDate().withMessage("posted date must be in date"),
+    check('posted_date', 'posted date is required').notEmpty(),
 
-    check('deadline').optional({
-        nullable: true
-    })
-        .isDate().withMessage("deadline must be in date")
+    check('deadline', 'deadline is required').notEmpty()
 ]
 
 exports.projectCheck = [

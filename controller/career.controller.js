@@ -53,6 +53,7 @@ exports.getCareerDetailsbytitle = async(req, res) =>{
 
 //to update career
 exports.updateCareer = async (req, res) => {
+    console.log(req.body)
     const career = await Career.findByIdAndUpdate(req.params.id, {
         career_title: req.body.career_title,
         vacancyNumber: req.body.vacancyNumber,
@@ -66,7 +67,7 @@ exports.updateCareer = async (req, res) => {
         return res.status(400).json({ error: "Something went wrong" })
     }
     else {
-        return res.status(400).json({ error: "career updated successfully" })
+        return res.status(200).json({ msg: "career updated successfully" })
     }
 }
 
@@ -79,7 +80,7 @@ exports.deleteCareer = async (req, res) => {
         return res.status(400).json({ error: "career not found" })
     }
     else {
-        return res.status(400).json({ error: "career deleted successfully" })
+        return res.status(200).json({ msg: "career deleted successfully" })
     }
 }
 
