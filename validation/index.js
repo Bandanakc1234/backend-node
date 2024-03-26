@@ -1,4 +1,5 @@
 const { check, validationResult } = require('express-validator')
+// const moment = require('moment')
 
 exports.categoryCheck = [
     check('category_title', 'category title is required').notEmpty()
@@ -32,6 +33,13 @@ exports.careerCheck = [
         .isLength({ min: 10 }).withMessage("qualification must be at least 10 character"),
 
     check('posted_date', 'posted date is required').notEmpty(),
+    // .custom((value, {req}) =>{
+    //     if(!moment(value, 'DD-MM-YYYY', true).isValid()){
+    //         throw new Error('invalid deadline format')
+    //     }
+    //     if()
+    //     return true;
+    // }),
 
     check('deadline', 'deadline is required').notEmpty()
 ]
@@ -52,7 +60,8 @@ exports.projectCheck = [
 ]
 
 exports.projectCheckOptional = [
-    check('project_title').optional({ nullable: true }),
+    check('project_title').optional({ nullable: true })
+    .isLength({ min: 3 }).withMessage("project name must be at least 3 character"),
 
     check('category').optional({ nullable: true }),
 

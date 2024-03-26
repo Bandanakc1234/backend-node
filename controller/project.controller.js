@@ -1,9 +1,7 @@
 const Project = require("./../model/project.model")
 
-
 //to create new project
 exports.addProject = async (req, res) => {
-    console.log(req.file)
     let project = await Project.findOne({ project_title: req.body.project_title })
     if (project) {
         return res.status(400).json({ error: "project already exists" })
