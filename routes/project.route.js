@@ -1,7 +1,7 @@
 const router = require("express").Router()
 const { getProject, addProject, updateProject, deleteProject, getProjectByCategory, getProjectDetailsBytitle, getProjectDetailsBylanguage, getProjectDetailsbyid } = require("../controller/project.controller")
 const { requireLogin } = require("../controller/user.controller")
-const { projectCheck, validate } = require("../validation")
+const { projectCheck, validate, projectCheckOptional } = require("../validation")
 const upload = require('./../utils/fileUpload')
 
 
@@ -18,7 +18,7 @@ router.get("/view_projectdetailsbytitle", getProjectDetailsBytitle)
 
 router.get("/view_projectdetailsbylanguage", getProjectDetailsBylanguage)
 
-router.put("/update_project/:id",upload.single("project_image"),requireLogin,projectCheck,validate, updateProject)
+router.put("/update_project/:id",upload.single("project_image"),requireLogin,projectCheckOptional,validate, updateProject)
 
 router.delete("/delete_project/:id",requireLogin, deleteProject)
 

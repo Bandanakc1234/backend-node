@@ -6,6 +6,8 @@ exports.categoryCheck = [
 ]
 
 exports.validate = (req, res, next) => {
+    console.log(req.body)
+
     const errors = validationResult(req)
     if (!errors.isEmpty()) {
         return res.status(400).json({ error: errors.array()[0].msg })
@@ -44,7 +46,21 @@ exports.projectCheck = [
         .isLength({ min: 2 }).withMessage("language must be at least 2 character."),
 
     check('tools').notEmpty()
-        .isLength({ min: 2 }).withMessage("tools must be at least 2 character.")
+        .isLength({ min: 2 }).withMessage("tools must be at least 2 character."),
+
+        // check('project_image','project image is required').notEmpty()
+]
+
+exports.projectCheckOptional = [
+    check('project_title').optional({ nullable: true }),
+
+    check('category').optional({ nullable: true }),
+
+    check('language').optional({ nullable: true }),
+
+    check('tools').optional({ nullable: true }),
+
+    check('project_image').optional({ nullable: true })
 
 ]
 

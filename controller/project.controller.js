@@ -3,13 +3,15 @@ const Project = require("./../model/project.model")
 
 //to create new project
 exports.addProject = async (req, res) => {
+    console.log(req.file)
     let project = await Project.findOne({ project_title: req.body.project_title })
     if (project) {
         return res.status(400).json({ error: "project already exists" })
     }
     if (!req.file) {
-        return res.status(400).json({ error: "file not selected" })
+        return res.status(400).json({ error: "file not Selected" })
     }
+   
     let projectToAdd = new Project({
         project_title: req.body.project_title,
         project_image: req.file.path,
@@ -73,6 +75,7 @@ exports.getProjectDetailsBylanguage = async(req, res) =>{
 
 //to update project
 exports.updateProject = async (req, res) => {
+
     const project = await Project.findByIdAndUpdate(req.params.id,
         req.file ?
             {
@@ -93,7 +96,7 @@ exports.updateProject = async (req, res) => {
         return res.status(400).json({ error: "Something went wrong" })
     }
     else {
-        return res.status(400).json({ error: "project updated successfully" })
+        return res.status(400).json({ msg: "project updated successfully" })
     }
 }
 
@@ -105,7 +108,7 @@ exports.deleteProject = (req, res) => {
             if (!project) {
                 return res.status(400).json({ error: "project not found" })
             }
-            return res.status(200).json({ message: "project deleted successfully" })
+            return res.status(200).json({ msg: "project deleted successfully" })
         })
         .catch(error => {
             return res.status(400).json({ error: error.message })
