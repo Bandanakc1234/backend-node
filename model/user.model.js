@@ -54,6 +54,8 @@ const UserModel = new Schema({
             // required: true
         }
     },
+    position: String,
+    image: String,
     role: {
         type: Number, //0-normal user, 1-admin user, 2-super admin user
         default: 0

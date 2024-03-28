@@ -29,12 +29,12 @@ UserInformation = (user, reqData) => {
     if (reqData.email) {
         user.email = reqData.email
     }
-    // if (reqData.password) {
-    //     user.password = reqData.password
-    // }
-    // if (reqData.confirm_password) {
-    //     user.confirmpassword = reqData.confirm_password
-    // }
+    if (reqData.password) {
+        user.password = reqData.password
+    }
+    if (reqData.confirm_password) {
+        user.confirmpassword = reqData.confirm_password
+    }
     if (reqData.gender) {
         user.gender = reqData.gender
     }
@@ -51,6 +51,12 @@ UserInformation = (user, reqData) => {
     if (reqData.permanent_address) {
         user.address.permanentAddress = reqData.permanent_address
     }
+    if (reqData.position) {
+        user.position = reqData.position
+    }
+    if (reqData.image) {
+        user.image = reqData.image
+    }
     if (reqData.role) {
         user.role = reqData.role
     }
@@ -61,19 +67,22 @@ UserInformation = (user, reqData) => {
 
 //user register
 exports.Register = async (req, res) => {
-    console.log(req.body)
     //checked if email already registered
     const email = req.body.email;
     const user = await User.findOne({ email: email })
     if (user) {
         return res.status(400).json({ error: "Email already exists."})
     }
+    if (!req.file){
+        return res.status(400).json({ error: "File not Selected."})
+    }
     let newUser = new User({
+        image: req.file.path,
     })
     //created unique password
+    UserInformation(newUser, req.body)
     let salt = await bcrypt.genSalt(saltRounds)
     newUser.password = await bcrypt.hash(req.body.password, salt)
-    UserInformation(newUser, req.body)
     //added user to the database
     newUser = await newUser.save()
     if (!newUser) {
