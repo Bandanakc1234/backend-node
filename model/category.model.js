@@ -6,6 +6,16 @@ const categoryModel = new Schema({
         type: String,
         required: true,
         trim: true
+    },
+    icon:{
+        type: String,
+        // required:true,
+        // trim:true
+    },
+    description:{
+        type:String,
+        // required: true,
+        // trim: true
     }
 }, {timestamps: true})
 

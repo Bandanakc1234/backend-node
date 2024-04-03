@@ -1,9 +1,31 @@
 const { check, validationResult } = require('express-validator')
-// const moment = require('moment')
+const moment = require('moment')
+
+
+// function validateDates(posted_date, deadline){
+//     if(!posted_date || !deadline){
+//         return "Both posted date and deadline are required."
+//     }
+//     const postedDate = moment(posted_date);
+//     const deadlineDate = moment(deadline);
+
+//     if(!posted.isValid() || !deadline.isValid()){
+//         return "Invalid data format. please provide dates in a valid format";
+//     }
+//     if(deadline.isBefore(posted)){
+//         return "Deadline date cannot be before the posted date."
+//     }
+//     return true;
+// }
 
 exports.categoryCheck = [
     check('category_title', 'category title is required').notEmpty()
-        .isLength({ min: 3 }).withMessage("Category name must be at least 3 characters")
+        .isLength({ min: 3 }).withMessage("Category name must be at least 3 characters"),
+
+    // check('icon', 'icon is required').notEmpty(),
+
+    check("description", "description is required").notEmpty()
+         .isLength({min: 5}).withMessage('Description mmust be at least 5 characters')
 ]
 
 exports.validate = (req, res, next) => {
@@ -34,14 +56,14 @@ exports.careerCheck = [
 
     check('posted_date', 'posted date is required').notEmpty(),
     // .custom((value, {req}) =>{
-    //     if(!moment(value, 'DD-MM-YYYY', true).isValid()){
-    //         throw new Error('invalid deadline format')
-    //     }
-    //     if()
-    //     return true;
-    // }),
+    //     return validateDates(value, req.body.deadline) === true;
+    //     }).withMessage("invalid posted date or deadline date"),
 
-    check('deadline', 'deadline is required').notEmpty()
+    check('deadline', 'deadline is required').notEmpty(),
+    // .custom((value, {req}) =>{
+    //     return validateDates(req.body.posted_date, value) === true;
+    //     }).withMessage("invalid posted date or deadline date"),
+
 ]
 
 exports.projectCheck = [
@@ -65,9 +87,11 @@ exports.projectCheckOptional = [
 
     check('category').optional({ nullable: true }),
 
-    check('language').optional({ nullable: true }),
+    check('language').optional({ nullable: true })
+    .isLength({ min: 2 }).withMessage("language must be at least 2 character."),
 
-    check('tools').optional({ nullable: true }),
+    check('tools').optional({ nullable: true })
+    .isLength({ min: 2 }).withMessage("tools must be at least 2 character."),
 
     check('project_image').optional({ nullable: true })
 

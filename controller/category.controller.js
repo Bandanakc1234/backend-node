@@ -7,7 +7,9 @@ exports.addCategory = async (req, res) =>{
         return res.status(400).json({error: "category already exists" })
     }
     let categoryToAdd = new Category({
-        category_title: req.body.category_title
+        category_title: req.body.category_title,
+        icon: req.body.icon,
+        description: req.body.description
     })
     categoryToAdd = await categoryToAdd.save()
     if(!categoryToAdd){
@@ -48,7 +50,9 @@ exports.getCategoryDetailsbytitle = async(req, res) =>{
 //to update category
 exports.updateCategory = async (req, res) => {
     const category = await Category.findByIdAndUpdate(req.params.id, {
-        category_title: req.body.category_title
+        category_title: req.body.category_title,
+        icon: req.body.icon,
+        description: req.body.description
     }, { new: true })
     if (!category) {
         return res.status(400).json({ error: "Something went wrong" })
