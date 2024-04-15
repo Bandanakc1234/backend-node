@@ -1,10 +1,11 @@
 const { applyForCareer } = require("../controller/applyCareer.controller")
 const upload = require("../utils/fileUpload")
+const { validate, applyCareerCheck } = require("../validation")
 const router = require("express").Router()
 
 
 
-router.post("/apply_career", upload.single("image"), applyForCareer)
+router.post("/apply_career", upload.single("image"),applyCareerCheck, validate, applyForCareer)
 
 // router.get("/view_career", getCareer)
 

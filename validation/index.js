@@ -25,7 +25,7 @@ exports.categoryCheck = [
     // check('icon', 'icon is required').notEmpty(),
 
     check("description", "description is required").notEmpty()
-         .isLength({min: 5}).withMessage('Description mmust be at least 5 characters')
+        .isLength({ min: 5 }).withMessage('Description mmust be at least 5 characters')
 ]
 
 exports.validate = (req, res, next) => {
@@ -49,7 +49,7 @@ exports.careerCheck = [
         .isNumeric().withMessage("salary must be number"),
 
     check('job_description', 'job description is required').notEmpty()
-        .isLength({ min: 10 }).withMessage(" job description must be at least 3 character"),
+        .isLength({ min: 10 }).withMessage(" job description must be at least 10 character"),
 
     check('qualification', 'Qualification is required').notEmpty()
         .isLength({ min: 10 }).withMessage("qualification must be at least 10 character"),
@@ -78,22 +78,44 @@ exports.projectCheck = [
     check('tools').notEmpty()
         .isLength({ min: 2 }).withMessage("tools must be at least 2 character."),
 
-        // check('project_image','project image is required').notEmpty()
+    // check('project_image','project image is required').notEmpty()
 ]
 
 exports.projectCheckOptional = [
     check('project_title').optional({ nullable: true })
-    .isLength({ min: 3 }).withMessage("project name must be at least 3 character"),
+        .isLength({ min: 3 }).withMessage("project name must be at least 3 character"),
 
     check('category').optional({ nullable: true }),
 
     check('language').optional({ nullable: true })
-    .isLength({ min: 2 }).withMessage("language must be at least 2 character."),
+        .isLength({ min: 2 }).withMessage("language must be at least 2 character."),
 
     check('tools').optional({ nullable: true })
-    .isLength({ min: 2 }).withMessage("tools must be at least 2 character."),
+        .isLength({ min: 2 }).withMessage("tools must be at least 2 character."),
 
     check('project_image').optional({ nullable: true })
+
+]
+
+exports.applyCareerCheck = [
+    check('first_name', 'Enter your first name').notEmpty(),
+
+    check('last_name', 'Enter your last name.').notEmpty(),
+
+    check('email', 'Email is required').notEmpty(),
+    //     .isEmail().withMessage("Email format is incorrect."),
+
+    check('phone_number', 'Phone number is required').notEmpty()
+        .matches(/^9\d{9}$/).withMessage("Phone number must start with 9 and contain 10 digits."),
+
+    check('qualification', 'Qualification is required').notEmpty()
+        .isLength({ min: 10 }).withMessage("qualification must be at least 10 character"),
+
+    check('experience', 'Experience is required').notEmpty()
+        .isLength({ min: 10 }).withMessage("Experience must be at least 10 character"),
+
+    check('reference').optional({ nullable: true })
+
 
 ]
 
