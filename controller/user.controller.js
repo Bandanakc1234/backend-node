@@ -71,13 +71,13 @@ exports.Register = async (req, res) => {
     const email = req.body.email;
     const user = await User.findOne({ email: email })
     if (user) {
-        return res.status(400).json({ error: "Email already exists."})
+        return res.status(400).json({ error: "Email already exists." })
     }
-    if (!req.file){
-        return res.status(400).json({ error: "File not Selected."})
-    }
+    // if (!req.file){
+    //     return res.status(400).json({ error: "File not Selected."})
+    // }
     let newUser = new User({
-        image: req.file.path,
+        // image: req.file.path,
     })
     //created unique password
     UserInformation(newUser, req.body)
@@ -245,77 +245,117 @@ exports.getUserDetails = async (req, res) => {
 
 // update user
 exports.updateUser = async (req, res) => {
-    let user = await User.findByIdAndUpdate(req.params.id)
-    UserInformation(user, req.body)
-    user = await user.save()
+
+    const user = await User.findByIdAndUpdate(req.params.id,
+        req.file ?
+            {
+                firstname: req.body.first_name,
+                lastname: req.body.last_name,
+                username: req.body.username,
+                email: req.body.email,
+                gender: req.body.gender,
+                age: req.body.age,
+                phonenumber: req.body.phone_number,
+                position: req.body.position,
+                tempAddress: req.body.temporary_address,
+                permanentAddress: req.body.permanent_address,
+                image: req.file.path
+
+            } :
+            {
+                firstname: req.body.first_name,
+                lastname: req.body.last_name,
+                username: req.body.username,
+                email: req.body.email,
+                gender: req.body.gender,
+                age: req.body.age,
+                position: req.body.position,
+                tempAddress: req.body.temporary_address,
+                permanentAddress: req.body.permanent_address,
+                phonenumber: req.body.phone_number
+            },
+        { new: true })
     if (!user) {
         return res.status(400).json({ error: "Something went wrong." })
     }
-    res.send(user)
-}
-
-//user Login
-exports.Login = async (req, res) => {
-    console.log(req.body)
-    let { email, password } = req.body;
-    // Check email
-    let user = await User.findOne({ email: email });
-    if (!user) {
-        return res.status(400).json({ error: "Email not registered." });
+    else {
+        return res.status(400).json({msg: "User updated Successfully"})
     }
-if(!password){
-    return res.status(400).json({error:"Please enter your password"})
-}
-    // Check password
-    // console.log(password, user.password)
-    // const passwordMatch = bcrypt.compare(password, user.password);
-    const passwordMatch = await bcrypt.compare(password, user.password)
-    if (!passwordMatch) {
-        // if(password != user.password){
-        return res.status(400).json({ error: "Email and password do not match" });
+        
+        // let user = await User.findByIdAndUpdate(req.params.id)
+        // // if (req.file) {
+        // //     user.image = req.file.path
+        // // }
+        // UserInformation(user, req.body)
+        // user = await user.save()
+        // if (!user) {
+        //     return res.status(400).json({ error: "Something went wrong." })
+        // }
+        // res.send(user)
     }
 
-    // Check if verified
-    if (!user.isVerified) {
-        return res.status(400).json({ error: "User not verified." });
+    //user Login
+    exports.Login = async (req, res) => {
+        console.log(req.body)
+        let { email, password } = req.body;
+        // Check email
+        let user = await User.findOne({ email: email });
+        if (!user) {
+            return res.status(400).json({ error: "Email not registered." });
+        }
+        if (!password) {
+            return res.status(400).json({ error: "Please enter your password" })
+        }
+        // Check password
+        // console.log(password, user.password)
+        // const passwordMatch = bcrypt.compare(password, user.password);
+        const passwordMatch = await bcrypt.compare(password, user.password)
+        if (!passwordMatch) {
+            // if(password != user.password){
+            return res.status(400).json({ error: "Email and password do not match" });
+        }
+
+        // Check if verified
+        if (!user.isVerified) {
+            return res.status(400).json({ error: "User not verified." });
+        }
+
+        // Create login token
+        let token = createToken({ user: user._id, role: user.role })
+
+        // Set cookie
+        res.cookie('myCookie', token, { expire: Date.now() + 86400 });
+
+        // Return info to frontend
+        let { _id, username, role } = user;
+        res.status(200).json({ token, user: { _id, username, email, role } });
     }
 
-    // Create login token
-    let token = createToken({ user: user._id, role: user.role })
+    //logout
+    exports.Logout = async (req, res) => {
+        await res.clearCookie("myCookie")
+        res.send({ msg: "Signed out successfully" })
+    }
 
-    // Set cookie
-    res.cookie('myCookie', token, { expire: Date.now() + 86400 });
-
-    // Return info to frontend
-    let { _id, username, role } = user;
-    res.status(200).json({ token, user: { _id, username, email, role } });
-}
-
-//logout
-exports.Logout = async (req, res) => {
-    await res.clearCookie("myCookie")
-    res.send({ msg: "Signed out successfully" })
-}
-
-//delete user
-exports.DeleteUser = (req, res) => {
-    User.findByIdAndDelete(req.params.id)
-        .then((user) => {
-            if (!user) {
-                return res.status(400).json({ error: "user not found!!" })
-            }
-            return res.status(200).json({ message: "User deleted successfully" })
-        })
-        .catch(error => {
-            return res.status(400).json({ error: error.message })
-        })
-}
+    //delete user
+    exports.DeleteUser = (req, res) => {
+        User.findByIdAndDelete(req.params.id)
+            .then((user) => {
+                if (!user) {
+                    return res.status(400).json({ error: "user not found!!" })
+                }
+                return res.status(200).json({ message: "User deleted successfully" })
+            })
+            .catch(error => {
+                return res.status(400).json({ error: error.message })
+            })
+    }
 
 
 
 
-//for authorizaion 
-exports.requireLogin = expressjwt({
-    algorithms: ['HS256'],
-    secret: process.env.JWT_SECRET_KEY
-})
+    //for authorizaion 
+    exports.requireLogin = expressjwt({
+        algorithms: ['HS256'],
+        secret: process.env.JWT_SECRET_KEY
+    })

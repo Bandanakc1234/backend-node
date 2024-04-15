@@ -25,7 +25,7 @@ exports.categoryCheck = [
     // check('icon', 'icon is required').notEmpty(),
 
     check("description", "description is required").notEmpty()
-         .isLength({min: 5}).withMessage('Description mmust be at least 5 characters')
+        .isLength({ min: 5 }).withMessage('Description mmust be at least 5 characters')
 ]
 
 exports.validate = (req, res, next) => {
@@ -78,20 +78,20 @@ exports.projectCheck = [
     check('tools').notEmpty()
         .isLength({ min: 2 }).withMessage("tools must be at least 2 character."),
 
-        // check('project_image','project image is required').notEmpty()
+    // check('project_image','project image is required').notEmpty()
 ]
 
 exports.projectCheckOptional = [
     check('project_title').optional({ nullable: true })
-    .isLength({ min: 3 }).withMessage("project name must be at least 3 character"),
+        .isLength({ min: 3 }).withMessage("project name must be at least 3 character"),
 
     check('category').optional({ nullable: true }),
 
     check('language').optional({ nullable: true })
-    .isLength({ min: 2 }).withMessage("language must be at least 2 character."),
+        .isLength({ min: 2 }).withMessage("language must be at least 2 character."),
 
     check('tools').optional({ nullable: true })
-    .isLength({ min: 2 }).withMessage("tools must be at least 2 character."),
+        .isLength({ min: 2 }).withMessage("tools must be at least 2 character."),
 
     check('project_image').optional({ nullable: true })
 
@@ -138,4 +138,31 @@ exports.userCheck = [
 
     check('permanent_address', 'Permanent address is required').notEmpty()
 
+]
+
+exports.userCheckOptional = [
+    check('first_name').optional({ nullable: true }),
+
+    check('last_name').optional({ nullable: true }),
+
+    check('username').optional({ nullable: true })
+        .matches(/^[a-zA-Z]/).withMessage("Username must start with alphabet.")
+        .isLength({ min: 3 }).withMessage("Username must be at least 3 characters."),
+
+    check('email').optional({ nullable: true })
+        .isEmail().withMessage("Email format is incorrect."),
+
+    check('gender').optional({ nullable: true }),
+
+    check('age').optional({ nullable: true })
+        .matches(/^[0-9]{2}$/).withMessage("Age must be in number.")
+        .not().matches(/[a-zA-z]/).withMessage("Alphabets are not allowed in age.")
+        .not().matches(/[_\-\.@!#$%^&*/+]/).withMessage("Special character are not allowed in age"),
+
+    check('phone_number').optional({ nullable: true })
+        .matches(/^9\d{9}$/).withMessage("Phone number must start with 9 and contain 10 digits."),
+
+    check('permanent_address').optional({ nullable: true }),
+
+    check('image').optional({ nullable: true })
 ]
