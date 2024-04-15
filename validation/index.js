@@ -161,3 +161,30 @@ exports.userCheck = [
     check('permanent_address', 'Permanent address is required').notEmpty()
 
 ]
+
+exports.userCheckOptional = [
+    check('first_name').optional({ nullable: true }),
+
+    check('last_name').optional({ nullable: true }),
+
+    check('username').optional({ nullable: true })
+        .matches(/^[a-zA-Z]/).withMessage("Username must start with alphabet.")
+        .isLength({ min: 3 }).withMessage("Username must be at least 3 characters."),
+
+    check('email').optional({ nullable: true })
+        .isEmail().withMessage("Email format is incorrect."),
+
+    check('gender').optional({ nullable: true }),
+
+    check('age').optional({ nullable: true })
+        .matches(/^[0-9]{2}$/).withMessage("Age must be in number.")
+        .not().matches(/[a-zA-z]/).withMessage("Alphabets are not allowed in age.")
+        .not().matches(/[_\-\.@!#$%^&*/+]/).withMessage("Special character are not allowed in age"),
+
+    check('phone_number').optional({ nullable: true })
+        .matches(/^9\d{9}$/).withMessage("Phone number must start with 9 and contain 10 digits."),
+
+    check('permanent_address').optional({ nullable: true }),
+
+    check('image').optional({ nullable: true })
+]
