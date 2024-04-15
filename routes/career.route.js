@@ -1,4 +1,5 @@
 const router = require("express").Router()
+// const { applyForCareer } = require("../controller/applyCareer.controller")
 const { addCareer, updateCareer, deleteCareer, getCareer, getCareerDetailsbyid, getCareerDetailsbytitle, } = require("../controller/career.controller")
 const { requireLogin } = require("../controller/user.controller")
 const { careerCheck, validate } = require("../validation")
