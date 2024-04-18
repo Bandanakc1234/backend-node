@@ -38,3 +38,12 @@ exports.applyForCareer = async (req, res) => {
         res.status(500).json({ success: false, error: error.message });
     }
 }
+
+//to view career
+exports.getAppliedCareer = async (req, res) => {
+    let appliedcareer = await ApplyCareerDetails.find()
+    if (!appliedcareer) {
+        return res.status(400).json({ error: "Something went wrong" })
+    }
+    res.json(appliedcareer)
+}
