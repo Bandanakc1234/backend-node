@@ -236,6 +236,15 @@ exports.getUserList = async (req, res) => {
     res.send(users)
 }
 
+// to get userList in client side
+exports.getUserListClient = async(req,res) =>{
+    let users = await User.find().select('firstname lastname position image')
+    if (!users) {
+        return res.status(400).json({ error: "Something went wrong." })
+    }
+    res.send(users)
+}
+
 // to get user Details
 exports.getUserDetails = async (req, res) => {
     let user = await User.findById(req.params.id)

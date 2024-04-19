@@ -28,7 +28,7 @@ const applyCareerDetailsModel = new Schema({
         // required: true
     },
     qualification:{
-        typr: String,
+        type: String,
         // required: true
     },
     experience:{
