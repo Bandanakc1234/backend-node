@@ -57,6 +57,9 @@ UserInformation = (user, reqData) => {
     if (reqData.image) {
         user.image = reqData.image
     }
+    if (reqData.about) {
+        user.about = reqData.about
+    }
     if (reqData.role) {
         user.role = reqData.role
     }
@@ -73,11 +76,12 @@ exports.Register = async (req, res) => {
     if (user) {
         return res.status(400).json({ error: "Email already exists." })
     }
-    // if (!req.file){
-    //     return res.status(400).json({ error: "File not Selected."})
-    // }
+    //for file
+    if (!req.file) {
+        return res.status(400).json({ error: "File not Selected." })
+    }
     let newUser = new User({
-        // image: req.file.path,
+        image: req.file.path,
     })
     //created unique password
     UserInformation(newUser, req.body)
@@ -98,8 +102,6 @@ exports.Register = async (req, res) => {
         return res.status(400).json({ error: "fail to generate token." })
     }
     // send token in email
-    // const url = `http://localhost:8000/api/user/verifyEmail/${token.token}`
-    // const url = `http://localhost:3000/verifyEmail/${token.token}`
     const url = `${process.env.FRONTEND_URL}/verifyEmail/${token.token}`
     sendEmail({
         from: "noreplay@something.com",
@@ -245,7 +247,6 @@ exports.getUserDetails = async (req, res) => {
 
 // update user
 exports.updateUser = async (req, res) => {
-
     const user = await User.findByIdAndUpdate(req.params.id,
         req.file ?
             {
@@ -259,6 +260,7 @@ exports.updateUser = async (req, res) => {
                 position: req.body.position,
                 tempAddress: req.body.temporary_address,
                 permanentAddress: req.body.permanent_address,
+                about: req.body.about,
                 image: req.file.path
 
             } :
@@ -272,6 +274,7 @@ exports.updateUser = async (req, res) => {
                 position: req.body.position,
                 tempAddress: req.body.temporary_address,
                 permanentAddress: req.body.permanent_address,
+                about: req.body.about,
                 phonenumber: req.body.phone_number
             },
         { new: true })
@@ -279,83 +282,74 @@ exports.updateUser = async (req, res) => {
         return res.status(400).json({ error: "Something went wrong." })
     }
     else {
-        return res.status(400).json({msg: "User updated Successfully"})
+        return res.status(400).json({ msg: "User updated Successfully" })
     }
-        
-        // let user = await User.findByIdAndUpdate(req.params.id)
-        // // if (req.file) {
-        // //     user.image = req.file.path
-        // // }
-        // UserInformation(user, req.body)
-        // user = await user.save()
-        // if (!user) {
-        //     return res.status(400).json({ error: "Something went wrong." })
-        // }
-        // res.send(user)
+}
+
+//user Login
+exports.Login = async (req, res) => {
+    console.log(req.body)
+    let { email, password } = req.body;
+    // Check email
+    let user = await User.findOne({
+        $or: [
+            { username: req.body.email },
+            { email: req.body.email }
+        ]
+    });
+    if (!user) {
+        return res.status(400).json({ error: "Email not registered." });
     }
-
-    //user Login
-    exports.Login = async (req, res) => {
-        console.log(req.body)
-        let { email, password } = req.body;
-        // Check email
-        let user = await User.findOne({ email: email });
-        if (!user) {
-            return res.status(400).json({ error: "Email not registered." });
-        }
-        if (!password) {
-            return res.status(400).json({ error: "Please enter your password" })
-        }
-        // Check password
-        // console.log(password, user.password)
-        // const passwordMatch = bcrypt.compare(password, user.password);
-        const passwordMatch = await bcrypt.compare(password, user.password)
-        if (!passwordMatch) {
-            // if(password != user.password){
-            return res.status(400).json({ error: "Email and password do not match" });
-        }
-
-        // Check if verified
-        if (!user.isVerified) {
-            return res.status(400).json({ error: "User not verified." });
-        }
-
-        // Create login token
-        let token = createToken({ user: user._id, role: user.role })
-
-        // Set cookie
-        res.cookie('myCookie', token, { expire: Date.now() + 86400 });
-
-        // Return info to frontend
-        let { _id, username, role } = user;
-        res.status(200).json({ token, user: { _id, username, email, role } });
+    if (!password) {
+        return res.status(400).json({ error: "Please enter your password" })
+    }
+    // Check password
+    const passwordMatch = await bcrypt.compare(password, user.password)
+    if (!passwordMatch) {
+        return res.status(400).json({ error: "Email and password do not match" });
     }
 
-    //logout
-    exports.Logout = async (req, res) => {
-        await res.clearCookie("myCookie")
-        res.send({ msg: "Signed out successfully" })
+    // Check if verified
+    if (!user.isVerified) {
+        return res.status(400).json({ error: "User not verified." });
     }
 
-    //delete user
-    exports.DeleteUser = (req, res) => {
-        User.findByIdAndDelete(req.params.id)
-            .then((user) => {
-                if (!user) {
-                    return res.status(400).json({ error: "user not found!!" })
-                }
-                return res.status(200).json({ message: "User deleted successfully" })
-            })
-            .catch(error => {
-                return res.status(400).json({ error: error.message })
-            })
-    }
+    // Create login token
+    let token = createToken({ user: user._id, role: user.role })
+
+    // Set cookie
+    res.cookie('myCookie', token, { expire: Date.now() + 86400 });
+
+    // Return info to frontend
+    let { _id, username, role, image } = user;
+    res.status(200).json({ token, user: { _id, username, email, role, image } });
+}
+
+//logout
+exports.Logout = async (req, res) => {
+    await res.clearCookie("myCookie")
+    res.send({ msg: "Signed out successfully" })
+}
+
+//delete user
+exports.DeleteUser = (req, res) => {
+    User.findByIdAndDelete(req.params.id)
+        .then((user) => {
+            if (!user) {
+                return res.status(400).json({ error: "user not found!!" })
+            }
+            return res.status(200).json({ message: "User deleted successfully" })
+        })
+        .catch(error => {
+            return res.status(400).json({ error: error.message })
+        })
+}
 
 
 
 
-    //for authorizaion 
-    exports.requireLogin = expressjwt({
-        algorithms: ['HS256'],
-        secret: process.env.JWT_SECRET_KEY
-    })
+//for authorizaion 
+exports.requireLogin = expressjwt({
+    algorithms: ['HS256'],
+    secret: process.env.JWT_SECRET_KEY
+})
