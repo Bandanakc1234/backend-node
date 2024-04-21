@@ -16,7 +16,7 @@ const createToken = (user) => {
     return token;
 }
 
-UserInformation = (user, reqData) => {
+const UserInformation = (user, reqData) => {
     if (reqData.first_name) {
         user.firstname = reqData.first_name
     }
@@ -71,6 +71,7 @@ UserInformation = (user, reqData) => {
 //user register
 exports.Register = async (req, res) => {
     //checked if email already registered
+    console.log(req.body)
     const email = req.body.email;
     const user = await User.findOne({ email: email })
     if (user) {
