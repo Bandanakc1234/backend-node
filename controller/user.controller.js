@@ -330,8 +330,8 @@ exports.Login = async (req, res) => {
     res.cookie('myCookie', token, { expire: Date.now() + 86400 });
 
     // Return info to frontend
-    let { _id, username, role, image } = user;
-    res.status(200).json({ token, user: { _id, username, email, role, image } });
+    let { _id, username, role, image, firstname, lastname, position } = user;
+    res.status(200).json({ token, user: { _id, username, email, role, image, lastname, position, firstname } });
 }
 
 //logout
