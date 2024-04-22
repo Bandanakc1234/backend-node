@@ -125,7 +125,7 @@ exports.userCheck = [
     check('last_name', 'Enter your last name.').notEmpty(),
 
     check('username', 'username is required').notEmpty()
-        .matches(/^[a-zA-Z]/).withMessage("Username must start with alphabet.")
+        .matches(/^[a-zA-Z0-9_]+$/).withMessage("Username can only contain letters, numbers, and underscores.")
         .isLength({ min: 3 }).withMessage("Username must be at least 3 characters."),
 
     check('email', 'Email is required').notEmpty()
@@ -168,7 +168,7 @@ exports.userCheckOptional = [
     check('last_name').optional({ nullable: true }),
 
     check('username').optional({ nullable: true })
-        .matches(/^[a-zA-Z]/).withMessage("Username must start with alphabet.")
+        .matches(/^[a-zA-Z0-9_]+$/).withMessage("Username can only contain letters, numbers, and underscores.")
         .isLength({ min: 3 }).withMessage("Username must be at least 3 characters."),
 
     check('email').optional({ nullable: true })
@@ -186,5 +186,27 @@ exports.userCheckOptional = [
 
     check('permanent_address').optional({ nullable: true }),
 
+    check('about').optional({ nullable: true })
+        .isLength({ min: 10 }).withMessage("About must be 10."),
+
     check('image').optional({ nullable: true })
+]
+
+exports.userResetPasswordCheck =[
+    check('password', 'Password is required').notEmpty()
+        .matches(/[a-z]/).withMessage("Password must contain at least one Lowercase character.")
+        .matches(/[A-Z]/).withMessage("Password must contain at least one Uppercase character.")
+        .matches(/[0-9]/).withMessage("Password must contain at least one Number.")
+        .matches(/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/).withMessage("Password must contain at least one Special character.")
+        .isLength({ min: 8 }).withMessage("Password must contain at least 8 characters"),
+
+    check("confirm_password").notEmpty()
+        .withMessage("Confirm password is required.")
+        .custom((value, { req }) => {
+            if (value === req.body.password) {
+                return true;
+            }
+            return false;
+        })
+        .withMessage("Passwords do not match."),
 ]
