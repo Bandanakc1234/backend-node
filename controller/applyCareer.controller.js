@@ -47,3 +47,12 @@ exports.getAppliedCareer = async (req, res) => {
     }
     res.json(appliedcareer)
 }
+
+// view applied list by career
+exports.getAppliedCareerByCareer = async(req, res) => {
+    let appliedcareer = await ApplyCareerDetails.find({career: req.params.id})
+    if (!appliedcareer) {
+        return res.status(400).json({ error: "Something went wrong" })
+    }
+    res.json(appliedcareer)
+}
