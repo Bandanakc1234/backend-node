@@ -1,10 +1,9 @@
 const router = require("express").Router()
 const { getProject, addProject, updateProject, deleteProject, getProjectByCategory, getProjectDetailsBytitle, getProjectDetailsBylanguage, getProjectDetailsbyid } = require("../controller/project.controller")
 const { requireLogin } = require("../controller/user.controller")
+// const { upload } = require("../utils/fileUpload")
 const { projectCheck, validate, projectCheckOptional } = require("../validation")
 const upload = require('./../utils/fileUpload')
-
-
 
 router.post("/add_project",upload.single("project_image"),requireLogin,projectCheck, validate, addProject)
 

@@ -1,16 +1,6 @@
-// const ApplyCareer = require("./../model/applyCareer.model") 
 const ApplyCareerDetails = require("./../model/applyCareerDetails.model")
 
-
-//apply career
-// exports.applyCareer  = async(req, res) =>{
-//     let applycareer = await Promise.all(
-//         req.body.applycareers.map(async applycareer =>{
-//             let applyCareerToAdd = new ApplyCareerDetails
-//         })
-//     )
-// }
-
+//apply for career
 exports.applyForCareer = async (req, res) => {
     console.log(req.body)
     try {
@@ -26,6 +16,7 @@ exports.applyForCareer = async (req, res) => {
             qualification: req.body.qualification,
             experience: req.body.experience,
             image: req.file.path,
+            curriculum_vitae: req.file.path,
             reference: req.body.reference
         });
 
@@ -39,7 +30,7 @@ exports.applyForCareer = async (req, res) => {
     }
 }
 
-//to view career
+//to view applied applicants list
 exports.getAppliedCareer = async (req, res) => {
     let appliedcareer = await ApplyCareerDetails.find()
     if (!appliedcareer) {
@@ -48,11 +39,26 @@ exports.getAppliedCareer = async (req, res) => {
     res.json(appliedcareer)
 }
 
-// view applied list by career
-exports.getAppliedCareerByCareer = async(req, res) => {
-    let appliedcareer = await ApplyCareerDetails.find({career: req.params.id})
+// view applied applicants list by career
+exports.getAppliedCareerByCareer = async (req, res) => {
+    let appliedcareer = await ApplyCareerDetails.find({ career: req.params.id })
     if (!appliedcareer) {
         return res.status(400).json({ error: "Something went wrong" })
     }
     res.json(appliedcareer)
+}
+
+//delete applicants form
+exports.deleteAppliedCareer = (req, res) => {
+    ApplyCareerDetails.findByIdAndDelete(req.params.id)
+        .then(appliedcareer => {
+            if (!appliedcareer) {
+                return res.status(400).json({ error: "there is no applied career" })
+            }
+            return res.status(200).json({ msg: "Applied Careeer deleted successfully" })
+        })
+        .catch(error => {
+            return res.status(400).json({ error: error.message })
+        })
+
 }
