@@ -87,6 +87,7 @@ exports.Register = async (req, res) => {
     UserInformation(newUser, req.body)
     let salt = await bcrypt.genSalt(saltRounds)
     newUser.password = await bcrypt.hash(req.body.password, salt)
+    
     //added user to the database
     newUser = await newUser.save()
     if (!newUser) {
