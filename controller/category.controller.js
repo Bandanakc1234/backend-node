@@ -62,7 +62,6 @@ exports.updateCategory = async (req, res) => {
     }
 }
 
-
 //delete category
 // exports.deleteCategory = async (req, res) => {
 //     const category = await Category.findByIdAndDelete(req.params.id)

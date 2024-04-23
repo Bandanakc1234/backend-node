@@ -13,6 +13,7 @@ const ProjectRoutes = require('./routes/project.route')
 const CategoryRoutes = require('./routes/category.route')
 const UserRoutes = require('./routes/user.route')
 const ApplyCareerRoutes = require('./routes/applyCareer.routes')
+const NormalUserRoutes = require('./routes/normaluser.route')
 
 const app = express()
 const port = process.env.PORT || 5000
@@ -28,10 +29,12 @@ app.use('/api/project', ProjectRoutes)
 app.use('/api/category', CategoryRoutes)
 app.use('/api/user', UserRoutes )
 app.use('/api', ApplyCareerRoutes)
+app.use('/api', NormalUserRoutes)
 
 
 //use static routes
 app.use('/api/public/uploads', express.static('public/uploads/'))
+
 
 
 
