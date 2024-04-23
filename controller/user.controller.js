@@ -71,7 +71,6 @@ const UserInformation = (user, reqData) => {
 //user register
 exports.Register = async (req, res) => {
     //checked if email already registered
-    console.log(req.body)
     const email = req.body.email;
     const user = await User.findOne({ email: email })
     if (user) {
@@ -354,9 +353,6 @@ exports.DeleteUser = (req, res) => {
             return res.status(400).json({ error: error.message })
         })
 }
-
-
-
 
 //for authorizaion 
 exports.requireLogin = expressjwt({
