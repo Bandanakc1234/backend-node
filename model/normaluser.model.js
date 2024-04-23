@@ -9,7 +9,7 @@ const NormalUserModel = new Schema({
     },
     email: {
         type: String,
-        // required: true
+        required: true
     },
     message: {
         type: String,

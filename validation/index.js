@@ -192,7 +192,7 @@ exports.userCheckOptional = [
     check('image').optional({ nullable: true })
 ]
 
-exports.userResetPasswordCheck =[
+exports.userResetPasswordCheck = [
     check('password', 'Password is required').notEmpty()
         .matches(/[a-z]/).withMessage("Password must contain at least one Lowercase character.")
         .matches(/[A-Z]/).withMessage("Password must contain at least one Uppercase character.")
@@ -210,3 +210,15 @@ exports.userResetPasswordCheck =[
         })
         .withMessage("Passwords do not match."),
 ]
+
+// exports.normalUserCheck = [
+//     check('name', 'name is required').notEmpty()
+//         .isLength({ min: 3 }).withMessage("name must be at least 3 character"),
+
+//     check('email', 'Email is required').notEmpty()
+//         .isEmail().withMessage("Email format is incorrect."),
+
+//     check('message', 'message is required').notEmpty()
+//         .isLength({ min: 10 }).withMessage("message must be at least 10 character"),
+
+// ]
