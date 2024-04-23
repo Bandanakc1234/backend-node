@@ -35,7 +35,7 @@ const applyCareerDetailsModel = new Schema({
         type: String,
         // required: true
     },
-    curriculum_vitae: String,
+    // curriculum_vitae: String,
     image: String,
     reference:{
         type: String,

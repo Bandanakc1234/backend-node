@@ -6,7 +6,7 @@ const { validate, applyCareerCheck } = require("../validation")
 const router = require("express").Router()
 
 
-router.post("/apply_career", upload.single("image"), pdfUpload.single("curriculum_vitae"), applyCareerCheck, validate, applyForCareer)
+router.post("/apply_career", upload.single("image"), applyCareerCheck, validate, applyForCareer)
 
 router.get("/view_appliedcareer",requireLogin, getAppliedCareer)
 

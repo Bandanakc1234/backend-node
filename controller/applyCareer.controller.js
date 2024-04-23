@@ -16,7 +16,7 @@ exports.applyForCareer = async (req, res) => {
             qualification: req.body.qualification,
             experience: req.body.experience,
             image: req.file.path,
-            curriculum_vitae: req.file.path,
+            // curriculum_vitae: req.file.path,
             reference: req.body.reference
         });
 
