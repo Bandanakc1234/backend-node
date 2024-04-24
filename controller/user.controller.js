@@ -71,7 +71,6 @@ const UserInformation = (user, reqData) => {
 //user register
 exports.Register = async (req, res) => {
     //checked if email already registered
-    console.log(req.body)
     const email = req.body.email;
     const user = await User.findOne({ email: email })
     if (user) {
@@ -88,6 +87,7 @@ exports.Register = async (req, res) => {
     UserInformation(newUser, req.body)
     let salt = await bcrypt.genSalt(saltRounds)
     newUser.password = await bcrypt.hash(req.body.password, salt)
+    
     //added user to the database
     newUser = await newUser.save()
     if (!newUser) {
@@ -354,9 +354,6 @@ exports.DeleteUser = (req, res) => {
             return res.status(400).json({ error: error.message })
         })
 }
-
-
-
 
 //for authorizaion 
 exports.requireLogin = expressjwt({

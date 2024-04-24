@@ -13,9 +13,10 @@ exports.submitNormalUserDetails = async (req, res) => {
 
         sendEmail({
             from: normalUserDetails.email,
-            to: "077bcsit017.kaveri@scst.edu.np",
-            subject: "Contact User Email",
-            text: `User Details:\n Name: ${normalUserDetails.name}\n Email: ${normalUserDetails.email}\n Message: ${normalUserDetails.message} `
+            to: "kcbandana55@gmail.com",
+            subject: "contact user Email",
+            text: `user Details:\n Nmae: ${normalUserDetails.name}\n Email: ${normalUserDetails.email}\n message:${normalUserDetails.message}`
+
         })
 
         res.status(201).json({
