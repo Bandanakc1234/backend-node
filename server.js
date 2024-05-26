@@ -36,8 +36,6 @@ app.use('/api', NormalUserRoutes)
 app.use('/api/public/uploads', express.static('public/uploads/'))
 
 
-
-
 app.listen(port, () =>{
     console.log(`server started successfully at port ${port}`)
 })

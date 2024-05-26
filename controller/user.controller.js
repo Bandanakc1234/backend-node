@@ -87,7 +87,7 @@ exports.Register = async (req, res) => {
     UserInformation(newUser, req.body)
     let salt = await bcrypt.genSalt(saltRounds)
     newUser.password = await bcrypt.hash(req.body.password, salt)
-    
+
     //added user to the database
     newUser = await newUser.save()
     if (!newUser) {
@@ -238,7 +238,7 @@ exports.getUserList = async (req, res) => {
 }
 
 // to get userList in client side
-exports.getUserListClient = async(req,res) =>{
+exports.getUserListClient = async (req, res) => {
     let users = await User.find().select('firstname lastname position image')
     if (!users) {
         return res.status(400).json({ error: "Something went wrong." })
